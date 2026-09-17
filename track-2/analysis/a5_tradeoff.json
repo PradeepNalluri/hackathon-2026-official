@@ -1,0 +1,159 @@
+{
+  "price_book": {
+    "usd_per_gpu_hour": 2.5,
+    "usd_per_engineer_hour": 95.0
+  },
+  "broken_node": {
+    "node": "r216287-n200569",
+    "jobs": 465,
+    "failed": 267,
+    "completed": 123,
+    "fail_rate": 0.5742,
+    "delivered_gpu_hours": 1993.6,
+    "wasted_gpu_hours": 128.0,
+    "productive_gpu_hours": 1048.5,
+    "net_gpu_hours_of_draining": -920.4,
+    "net_usd_gpu_only": -2301.11,
+    "median_failed_walltime_sec": 1.0,
+    "median_completed_walltime_sec": 2533.0,
+    "engineer_hours_per_failure": 0.25,
+    "human_cost_engineer_hours": 66.8,
+    "human_cost_usd": 6341.25,
+    "true_net_usd_of_draining": 4040.14,
+    "verdict": "drain"
+  },
+  "drain_targets": [
+    {
+      "node": "r4605940-n772143",
+      "jobs": 672,
+      "fail_rate": 0.4256,
+      "wasted_gpu_hours": 411.6,
+      "productive_gpu_hours": 970.4,
+      "net_gpu_hours_of_draining": -558.8
+    },
+    {
+      "node": "r7317916-n772143",
+      "jobs": 593,
+      "fail_rate": 0.3659,
+      "wasted_gpu_hours": 600.4,
+      "productive_gpu_hours": 867.8,
+      "net_gpu_hours_of_draining": -267.4
+    },
+    {
+      "node": "r3974592-n172107",
+      "jobs": 745,
+      "fail_rate": 0.2376,
+      "wasted_gpu_hours": 1057.0,
+      "productive_gpu_hours": 746.3,
+      "net_gpu_hours_of_draining": 310.8
+    },
+    {
+      "node": "r4144777-n172107",
+      "jobs": 437,
+      "fail_rate": 0.4622,
+      "wasted_gpu_hours": 162.1,
+      "productive_gpu_hours": 1273.4,
+      "net_gpu_hours_of_draining": -1111.3
+    },
+    {
+      "node": "r7317916-n303509",
+      "jobs": 424,
+      "fail_rate": 0.4623,
+      "wasted_gpu_hours": 281.1,
+      "productive_gpu_hours": 971.0,
+      "net_gpu_hours_of_draining": -689.9
+    }
+  ],
+  "drain_targets_total": {
+    "productive_gpu_hours": 4828.8,
+    "wasted_gpu_hours": 2512.3,
+    "net_gpu_hours_of_draining": -2316.6,
+    "net_usd_of_draining": -5791.4
+  },
+  "recommendation_swing_usd": 9831.54,
+  "api_plan_net_usd": -5791.4,
+  "our_plan_net_usd": 4040.14,
+  "threshold": {
+    "nodes_considered": 223,
+    "nodes_where_draining_pays": 11,
+    "min_fail_rate_among_drainable": 0.0371,
+    "max_fail_rate_among_keepers": 0.6551,
+    "top_candidates": [
+      {
+        "node": "r368967-n172107",
+        "fail_rate": 0.3631,
+        "net_gpu_hours": 598.4,
+        "net_usd": 1496.06
+      },
+      {
+        "node": "r204106-n172107",
+        "fail_rate": 0.2632,
+        "net_gpu_hours": 352.4,
+        "net_usd": 881.07
+      },
+      {
+        "node": "r3974592-n172107",
+        "fail_rate": 0.2376,
+        "net_gpu_hours": 310.8,
+        "net_usd": 776.96
+      },
+      {
+        "node": "r7141590-n172107",
+        "fail_rate": 0.2289,
+        "net_gpu_hours": 135.4,
+        "net_usd": 338.45
+      },
+      {
+        "node": "r2684277-n948219",
+        "fail_rate": 0.2957,
+        "net_gpu_hours": 125.7,
+        "net_usd": 314.24
+      }
+    ]
+  },
+  "queue": {
+    "jobs_with_wait": 74838,
+    "median_wait_sec": 8.0,
+    "p90_wait_sec": 7768.900000000009,
+    "p99_wait_sec": 65866.05000000016,
+    "max_wait_sec": 1051208.0,
+    "total_engineer_hours": 98213.8,
+    "total_engineer_usd": 9330306.65,
+    "slowest_1pct_jobs": 749,
+    "slowest_1pct_engineer_hours": 43035.3,
+    "slowest_1pct_usd": 4088356.17,
+    "slowest_1pct_share_of_wait": 0.4382,
+    "ratio_to_gpu_waste": 30.49
+  },
+  "weekday": {
+    "Mon": {
+      "submissions": 10739,
+      "median_wait_sec": 6.0
+    },
+    "Tue": {
+      "submissions": 10657,
+      "median_wait_sec": 6.0
+    },
+    "Wed": {
+      "submissions": 21151,
+      "median_wait_sec": 2007.0
+    },
+    "Thu": {
+      "submissions": 9307,
+      "median_wait_sec": 1.0
+    },
+    "Fri": {
+      "submissions": 6527,
+      "median_wait_sec": 1.0
+    },
+    "Sat": {
+      "submissions": 8425,
+      "median_wait_sec": 4.0
+    },
+    "Sun": {
+      "submissions": 8043,
+      "median_wait_sec": 1.0
+    }
+  },
+  "worst_weekday": "Wed"
+}

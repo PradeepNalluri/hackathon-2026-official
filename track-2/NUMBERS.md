@@ -235,6 +235,92 @@ Each carries the actual joins and numbers in its `reasoning` (schema says that f
 - **This is the one synthetic scenario** (`metadata.synthetic = true`). Flag it on the
   dashboard if you show it, the real telemetry has no storage records.
 
+# 8b. THE DRAIN TRADEOFF: what to actually do (`analysis/a5_tradeoff.json`)
+
+Our audit proved the API's drain list is wrong. This says what to do instead, with a
+number attached. **This answers "what does it cost if you're wrong", so it belongs on
+tile 3.**
+
+**The finding that surprised us: in GPU-hours, draining the broken machine looks like a
+bad idea. It isn't. The metric is wrong.**
+
+| | GPU-hours | USD |
+|---|---|---|
+| `r216287-n200569` delivered, total | 1,994 | $4,984 |
+| of that, to jobs that FAILED | 128 | $320 |
+| of that, to jobs that COMPLETED | 1,048 | $2,621 |
+| **net of draining, GPU-hours only** | **-920** | **-$2,301** |
+
+On GPU-hours alone that says keep it. **That conclusion is an artifact of the metric.**
+SIGBUS kills a job in **1 second** (median), against 2,533s for a job that completes
+here. A machine that destroyed 267 jobs burned only 128 GPU-hours doing it. Pricing a
+fast-failing machine in GPU-hours understates it by construction.
+
+The cost landed on people, not silicon: **267 dead jobs x 15 min** to diagnose and
+resubmit = **67 engineer-hours = $6,341** (15 min is deliberately conservative for a
+SIGBUS with no obvious cause).
+
+| plan | action | net |
+|---|---|---|
+| the API's `rec_drain_nodes` | drain 5 | **-$5,791** |
+| **ours** | **drain 1 (`r216287-n200569`), keep all 5** | **+$4,040** |
+| | **difference** | **+$9,832** |
+
+**Where the threshold sits:** of 223 machines with 30+ jobs, draining pays for itself on
+**11**. Failure rate alone does not decide it: the lowest failure rate among drainable
+machines is **4%**, while the highest among keepers is **66%**. A machine that fails
+often but fails *slowly* still delivers; one that fails *instantly* destroys throughput
+while consuming almost nothing. **Rate is the wrong signal, net capacity is the right
+one.**
+
+> **Demo line:** "Failure rate tells you which machines look bad. It does not tell you
+> which ones to pull. The one we drain fails 57% of the time but burns almost no GPU
+> time doing it, because it kills jobs in one second. The cost is 267 researchers'
+> afternoons, not 128 GPU-hours."
+
+# 8c. THE QUEUE TAIL: the number that reframes the conversation
+
+**$9.33M of researcher time spent waiting, 30.5x our GPU waste number.**
+
+| | value |
+|---|---|
+| engineer-hours waiting in queue | **98,214** |
+| at $95/engineer-hour | **$9,330,307** |
+| median wait | 8s |
+| p90 | 7,769s (2.2h) |
+| p99 | 65,866s (**18.3h**) |
+| worst single wait | 1,051,208s (292h / 12 days) |
+
+**The tail is the whole problem.** The slowest 1% (749 jobs) account for **43,035
+engineer-hours = $4.09M**, which is **44% of all waiting**. The median job waits 8
+seconds. This is not a slow queue, it is a queue with a catastrophic tail.
+
+**One weekday carries it.** Wednesday takes 21,151 submissions against ~8,700 on other
+days, and its median wait is **2,007s vs 2s elsewhere**:
+
+| day | submissions | median wait |
+|---|---|---|
+| Mon | 10,739 | 6s |
+| Tue | 10,657 | 6s |
+| **Wed** | **21,151** | **2,007s** |
+| Thu | 9,307 | 1s |
+| Fri | 6,527 | 1s |
+| Sat | 8,425 | 4s |
+| Sun | 8,043 | 1s |
+
+**Why this matters more than anything else on the dashboard:** a CFO told to cut GPU
+spend 20% is optimising a $1.49M line while a $9.33M line sits next to it, unmeasured,
+because waiting researchers never appear on an infrastructure invoice. Smoothing
+Wednesday's spike is a scheduling-policy change, not a purchase.
+
+> **Demo line:** "You asked where to cut $300k of GPU waste. We found it. We also found
+> your researchers spent $9.3 million waiting in a queue, 44% of it in the slowest 1% of
+> jobs, and one weekday in seven is causing it. That is the cheaper fix."
+
+**⚠️ Framing rule for B and C:** these are engineer-hours. **Never** add them to
+GPU-hour totals. Five rules in the catalogue carry no `impact_gpu_hours` for exactly
+this reason. Show it as a separate, parallel cost line.
+
 # 9. WHAT I DID NOT INVESTIGATE: leave these OUT of claims.json
 
 Omitting costs nothing; a confidently wrong field costs a lot.
@@ -242,4 +328,6 @@ Omitting costs nothing; a confidently wrong field costs a lot.
 - `card_imbalance_gpu_hours` / rationale. Needs per-card pivot, not done
 - `incident_degraded_gpu_hours` as a full interval, only the point (8,654) exists
 - 104 of the 113 node-elevated-failure-rate findings
-- queue-tail engineer-hours (98,213 engineer-h exists in the data, unanalysed)
+- The 9+ GPU bimodal split (59% under 5% util vs 9% over 80%). Identified in the
+  brief, not analysed by us
+- Calibration of the API's own confidence scores beyond `rec_drain_nodes`
