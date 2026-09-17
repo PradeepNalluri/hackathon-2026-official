@@ -1,0 +1,67 @@
+{
+  "wide_jobs": {
+    "min_walltime_sec": 3600,
+    "jobs_9plus": 398,
+    "hours_9plus": 98473.0,
+    "low_util_jobs": 31,
+    "low_util_hours": 16925.3,
+    "low_util_usd": 42313.35,
+    "low_util_share_of_wide": 0.0779,
+    "high_util_jobs": 36,
+    "high_util_hours": 53519.2,
+    "top3_users_share": 1.0,
+    "policy": {
+      "N=5": {
+        "jobs": 42,
+        "gpu_hours": 19220.3
+      },
+      "N=9": {
+        "jobs": 31,
+        "gpu_hours": 16925.3
+      },
+      "N=17": {
+        "jobs": 8,
+        "gpu_hours": 8248.7
+      },
+      "N=33": {
+        "jobs": 0,
+        "gpu_hours": 0.0
+      }
+    }
+  },
+  "card_imbalance": {
+    "multi_card_jobs": 9828,
+    "imbalanced_jobs": 1228,
+    "imbalanced_hours": 26184.0,
+    "conservative_idle_gpu_hours": 8979.4,
+    "conservative_idle_usd": 22448.5
+  },
+  "rightsizing": {
+    "jobs": 1028,
+    "gpu_hours": 52765.9,
+    "usd": 131914.84
+  },
+  "arrays": {
+    "mass_failed_arrays": 149,
+    "dead_tasks": 5044,
+    "symptoms_per_problem": 33.9,
+    "gpu_hours": 1452.8,
+    "usd": 3631.89
+  },
+  "timeouts": {
+    "jobs": 1544,
+    "gpu_hours": 107951.5,
+    "usd": 269878.8,
+    "computing_jobs": 208,
+    "computing_gpu_hours": 48157.4,
+    "rerun_inclusive_usd": 539757.61
+  },
+  "energy": {
+    "total_mwh": 46.0,
+    "total_usd": 6904.71,
+    "noncompleted_mwh": 26.2,
+    "noncompleted_usd": 3927.18,
+    "noncompleted_share": 0.5688,
+    "usd_per_kwh": 0.15
+  }
+}
